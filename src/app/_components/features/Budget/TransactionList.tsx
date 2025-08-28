@@ -319,18 +319,12 @@ export function TransactionList({
                             const recurringInfo = getRecurringInfo(earning);
 
                             return (
-                                <div key={earning.id} className="flex items-center justify-between p-3 bg-background/80 rounded-lg hover:bg-background transition-colors">
-                                    <div className="flex items-center space-x-3 flex-1 min-w-0">
-                                        {/* Category */}
-                                        {category && (
-                                            <div
-                                                className="w-3 h-3 rounded-full flex-shrink-0"
-                                                style={{ backgroundColor: category.color }}
-                                                title={category.name}
-                                            />
-                                        )}
-
-                                        {/* Main Info */}
+                                <div
+                                    key={earning.id}
+                                    className="flex flex-col md:flex-row md:items-center md:justify-between p-3 bg-background/80 rounded-lg hover:bg-background transition-colors"
+                                    style={category ? { borderLeft: `4px solid ${category.color}` } : {}}
+                                >
+                                    <div className="flex items-center space-x-3 flex-1 min-w-0 mb-2 md:mb-0">
                                         <div className="flex-1 min-w-0">
                                             <div className="flex items-center gap-2 mb-1">
                                                 <span className="font-medium truncate">{earning.description}</span>
@@ -342,7 +336,6 @@ export function TransactionList({
                                             </div>
 
                                             <div className="flex items-center gap-3 text-xs text-muted-foreground">
-                                                {/* People */}
                                                 <div className="flex items-center gap-1">
                                                     <div className="flex items-center gap-1">
                                                         {personColors.map((color, index) => (
@@ -373,7 +366,7 @@ export function TransactionList({
                                     </div>
 
                                     {/* Amount and Actions */}
-                                    <div className="flex items-center gap-2 ml-4">
+                                    <div className="flex items-center justify-between md:justify-end gap-2 md:ml-4">
                                         <span className="font-semibold text-success text-lg">
                                             +{formatCurrency(earning.amount, currency)}
                                         </span>
@@ -468,18 +461,12 @@ export function TransactionList({
                             const recurringInfo = getRecurringInfo(expense);
 
                             return (
-                                <div key={expense.id} className="flex items-center justify-between p-3 bg-background/80 rounded-lg hover:bg-background transition-colors">
-                                    <div className="flex items-center space-x-3 flex-1 min-w-0">
-                                        {/* Category */}
-                                        {category && (
-                                            <div
-                                                className="w-3 h-3 rounded-full flex-shrink-0"
-                                                style={{ backgroundColor: category.color }}
-                                                title={category.name}
-                                            />
-                                        )}
-
-                                        {/* Main Info */}
+                                <div
+                                    key={expense.id}
+                                    className="flex flex-col md:flex-row md:items-center md:justify-between p-3 bg-background/80 rounded-lg hover:bg-background transition-colors"
+                                    style={category ? { borderLeft: `4px solid ${category.color}` } : {}}
+                                >
+                                    <div className="flex items-center space-x-3 flex-1 min-w-0 mb-2 md:mb-0">
                                         <div className="flex-1 min-w-0">
                                             <div className="flex items-center gap-2 mb-1">
                                                 <span className="font-medium truncate">{expense.description}</span>
@@ -505,7 +492,6 @@ export function TransactionList({
                                                     <span className="truncate">{personNames}</span>
                                                 </div>
 
-                                                {/* Date */}
                                                 <div className="flex items-center gap-1">
                                                     <Calendar className="w-3 h-3" />
                                                     <span>{getTransactionDate(expense)}</span>
@@ -522,7 +508,7 @@ export function TransactionList({
                                     </div>
 
                                     {/* Amount and Actions */}
-                                    <div className="flex items-center gap-2 ml-4">
+                                    <div className="flex items-center justify-between md:justify-end gap-2 md:ml-4">
                                         <span className="font-semibold text-danger text-lg">
                                             -{formatCurrency(expense.amount, currency)}
                                         </span>

@@ -403,6 +403,13 @@
         }
       ],
       "createdAt": "2025-08-28T06:29:39.657Z"
+    },
+    {
+      "name": "Another budget",
+      "id": "22749de1-c823-472a-b897-cb9f704fe98b",
+      "earnings": [],
+      "expenses": [],
+      "createdAt": "2025-08-28T20:46:47.003Z"
     }
   ],
   "settings": {
