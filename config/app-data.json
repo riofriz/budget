@@ -1,0 +1,71 @@
+{
+  "people": [
+    {
+      "name": "Fernando",
+      "color": "#F7DC6F",
+      "id": "2959cba1-a868-4089-accb-2c384832ac32",
+      "createdAt": "2025-08-28T06:41:37.900Z"
+    },
+    {
+      "name": "Jodi",
+      "color": "#D7BDE2",
+      "id": "4e43ccfa-726b-4f9d-a693-e4cfb8c2edf6",
+      "createdAt": "2025-08-28T06:42:06.672Z"
+    },
+    {
+      "name": "Sebbie",
+      "color": "#85C1E9",
+      "id": "78287659-a506-463b-b631-f8d79f8b0834",
+      "createdAt": "2025-08-28T06:59:04.367Z"
+    }
+  ],
+  "budgetPages": [
+    {
+      "name": "My First Budget",
+      "id": "d005a0ee-e951-44ed-9cec-500f82de259e",
+      "earnings": [
+        {
+          "amount": 5030,
+          "description": "Salary",
+          "people": [
+            {
+              "personId": "2959cba1-a868-4089-accb-2c384832ac32",
+              "amount": 0
+            }
+          ],
+          "dueDate": 25,
+          "isRecurring": true,
+          "id": "48137f54-873b-4444-babb-e4e509ee82b0",
+          "createdAt": "2025-08-28T07:25:14.171Z",
+          "updatedAt": "2025-08-28T07:25:14.171Z"
+        }
+      ],
+      "expenses": [
+        {
+          "amount": 1257.61,
+          "description": "Mortgage",
+          "people": [
+            {
+              "personId": "2959cba1-a868-4089-accb-2c384832ac32",
+              "amount": 0
+            },
+            {
+              "personId": "4e43ccfa-726b-4f9d-a693-e4cfb8c2edf6",
+              "amount": 0
+            }
+          ],
+          "dueDate": 28,
+          "isRecurring": true,
+          "id": "d98b04b8-80c1-4222-8710-193c4086cf76",
+          "createdAt": "2025-08-28T07:18:44.068Z",
+          "updatedAt": "2025-08-28T07:18:44.068Z"
+        }
+      ],
+      "createdAt": "2025-08-28T06:29:39.657Z"
+    }
+  ],
+  "settings": {
+    "currency": "GBP",
+    "theme": "light"
+  }
+}

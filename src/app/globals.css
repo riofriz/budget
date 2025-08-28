@@ -1,26 +1,145 @@
-@import "tailwindcss";
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
-}
-
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
-
-@media (prefers-color-scheme: dark) {
+@layer base {
   :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+    --background: 0 0% 100%;
+    --foreground: 222.2 84% 4.9%;
+    --card: 0 0% 100%;
+    --card-foreground: 222.2 84% 4.9%;
+    --popover: 0 0% 100%;
+    --popover-foreground: 222.2 84% 4.9%;
+    --primary: 220 100% 60%;
+    --primary-foreground: 210 40% 98%;
+    --secondary: 210 40% 96%;
+    --secondary-foreground: 222.2 84% 4.9%;
+    --muted: 210 40% 96%;
+    --muted-foreground: 215.4 16.3% 46.9%;
+    --accent: 210 40% 96%;
+    --accent-foreground: 222.2 84% 4.9%;
+    --destructive: 0 84.2% 60.2%;
+    --destructive-foreground: 210 40% 98%;
+    --border: 214.3 31.8% 91.4%;
+    --input: 214.3 31.8% 91.4%;
+    --ring: 220 100% 60%;
+    --radius: 0.5rem;
+    
+    /* Custom theme colors - Blue to Purple (works great together!) */
+    --gradient-primary: linear-gradient(to right, hsl(220 100% 60%), hsl(280 100% 70%));
+    --gradient-secondary: linear-gradient(to right, hsl(220 100% 50%), hsl(280 100% 60%));
+    --gradient-danger: linear-gradient(to right, hsl(0 100% 60%), hsl(20 100% 60%));
+    --gradient-success: linear-gradient(to right, hsl(160 100% 50%), hsl(180 100% 50%));
+    --gradient-warning: linear-gradient(to right, hsl(45 100% 60%), hsl(30 100% 60%));
+    
+    --bg-gradient: linear-gradient(to bottom right, hsl(220 100% 95%), hsl(280 100% 95%), hsl(220 100% 98%));
+    --card-gradient: linear-gradient(to bottom right, hsl(220 100% 98%), hsl(280 100% 98%));
+  }
+
+  .dark {
+    --background: 220 13% 18%;
+    --foreground: 210 40% 98%;
+    --card: 220 13% 22%;
+    --card-foreground: 210 40% 98%;
+    --popover: 220 13% 22%;
+    --popover-foreground: 210 40% 98%;
+    --primary: 220 100% 60%;
+    --primary-foreground: 210 40% 98%;
+    --secondary: 220 13% 26%;
+    --secondary-foreground: 210 40% 98%;
+    --muted: 220 13% 26%;
+    --muted-foreground: 215 20.2% 65.1%;
+    --accent: 220 13% 26%;
+    --accent-foreground: 210 40% 98%;
+    --destructive: 0 62.8% 30.6%;
+    --destructive-foreground: 210 40% 98%;
+    --border: 220 13% 26%;
+    --input: 220 13% 26%;
+    --ring: 220 100% 60%;
+    
+    /* Custom theme colors for dark mode - Consistent blue-purple theme */
+    --gradient-primary: linear-gradient(to right, hsl(220 100% 60%), hsl(280 100% 70%));
+    --gradient-secondary: linear-gradient(to right, hsl(220 100% 50%), hsl(280 100% 60%));
+    --gradient-danger: linear-gradient(to right, hsl(0 100% 60%), hsl(20 100% 60%));
+    --gradient-success: linear-gradient(to right, hsl(160 100% 50%), hsl(180 100% 50%));
+    --gradient-warning: linear-gradient(to right, hsl(45 100% 60%), hsl(30 100% 60%));
+    
+    --bg-gradient: linear-gradient(to bottom right, hsl(220 13% 15%), hsl(220 13% 18%), hsl(220 13% 20%));
+    --card-gradient: linear-gradient(to bottom right, hsl(220 13% 20%), hsl(220 13% 22%));
   }
 }
 
-body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+@layer base {
+  * {
+    @apply border-border;
+  }
+  body {
+    @apply bg-background text-foreground;
+  }
+}
+
+@layer components {
+  .btn-primary {
+    @apply bg-gradient-to-r from-blue-500 to-purple-600 text-white hover:from-blue-600 hover:to-purple-700 focus:ring-blue-500 shadow-lg hover:shadow-xl;
+  }
+  
+  .btn-secondary {
+    @apply bg-gradient-to-r from-blue-400 to-purple-500 text-white hover:from-blue-500 hover:to-purple-600 focus:ring-blue-400 shadow-lg hover:shadow-xl;
+  }
+  
+  .btn-danger {
+    @apply bg-gradient-to-r from-red-500 to-orange-500 text-white hover:from-red-600 hover:to-orange-600 focus:ring-red-500 shadow-lg hover:shadow-xl;
+  }
+  
+  .btn-ghost {
+    @apply bg-transparent text-foreground hover:bg-muted focus:ring-muted-foreground;
+  }
+  
+  .btn-outline {
+    @apply bg-transparent border border-border text-foreground hover:bg-muted focus:ring-border;
+  }
+  
+  .card-default {
+    @apply rounded-xl border bg-card p-6 shadow-lg transition-all duration-200 hover:shadow-xl;
+  }
+  
+  .card-gradient {
+    @apply rounded-xl border border-blue-500/20 bg-gradient-to-br from-blue-500/5 to-purple-500/5 dark:from-blue-500/10 dark:to-purple-500/10 p-6 shadow-lg transition-all duration-200 hover:shadow-xl;
+  }
+  
+  .input-default {
+    @apply flex h-10 w-full rounded-lg border bg-background px-3 py-2 text-sm placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-ring focus:border-transparent transition-all duration-200;
+  }
+  
+  .badge-default {
+    @apply inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-medium transition-colors;
+  }
+  
+  .text-gradient-primary {
+    @apply bg-gradient-to-r from-blue-500 to-purple-600 bg-clip-text text-transparent;
+  }
+  
+  .text-gradient-secondary {
+    @apply bg-gradient-to-r from-blue-400 to-purple-500 bg-clip-text text-transparent;
+  }
+  
+  .text-gradient-success {
+    @apply bg-gradient-to-r from-emerald-500 to-teal-500 bg-clip-text text-transparent;
+  }
+  
+  .text-gradient-danger {
+    @apply bg-gradient-to-r from-red-500 to-orange-500 bg-clip-text text-transparent;
+  }
+  
+  .text-gradient-warning {
+    @apply bg-gradient-to-r from-yellow-500 to-orange-500 bg-clip-text text-transparent;
+  }
+  
+  .bg-gradient-funky {
+    background: var(--bg-gradient);
+  }
+  
+  .card-gradient-funky {
+    background: var(--card-gradient);
+  }
 }
