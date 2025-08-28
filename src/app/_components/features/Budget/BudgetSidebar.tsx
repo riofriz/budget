@@ -88,133 +88,89 @@ export function BudgetSidebar({
     };
 
     return (
-        <div className="w-80 bg-card border-r border-border h-screen flex flex-col">
+        <div className="w-80 bg-muted/50 h-screen flex flex-col">
             {/* Header */}
-            <div className="p-3 lg:p-4 border-b border-border">
+            <div className="p-3 lg:p-4 border-b border-border/50">
                 <h1 className="text-lg lg:text-xl font-bold text-gradient-primary mb-3 lg:mb-4">Budget Tracker</h1>
 
                 {/* Summary Cards */}
                 {summary && (
                     <div className="space-y-2 lg:space-y-3">
-                        <Card className="p-2 lg:p-3">
+                        <div className="p-2 lg:p-3 bg-background/80 rounded-lg">
                             <div className="flex items-center justify-between">
-                                <div className="flex items-center text-success text-xs lg:text-sm">
-                                    <TrendingUp className="w-3 h-3 lg:w-4 lg:h-4 mr-1" />
-                                    <span>Earnings</span>
+                                <div className="flex items-center gap-2">
+                                    <TrendingUp className="w-4 h-4 text-success" />
+                                    <span className="text-sm font-medium">Earnings</span>
                                 </div>
-                                <span className="font-semibold text-success text-xs lg:text-sm">
+                                <span className="text-sm font-semibold text-success">
                                     {formatCurrency(summary.totalEarnings, settings.currency)}
                                 </span>
                             </div>
-                        </Card>
+                        </div>
 
-                        <Card className="p-2 lg:p-3">
+                        <div className="p-2 lg:p-3 bg-background/80 rounded-lg">
                             <div className="flex items-center justify-between">
-                                <div className="flex items-center text-danger text-xs lg:text-sm">
-                                    <TrendingDown className="w-3 h-3 lg:w-4 lg:h-4 mr-1" />
-                                    <span>Expenses</span>
+                                <div className="flex items-center gap-2">
+                                    <TrendingDown className="w-4 h-4 text-danger" />
+                                    <span className="text-sm font-medium">Expenses</span>
                                 </div>
-                                <span className="font-semibold text-danger text-xs lg:text-sm">
+                                <span className="text-sm font-semibold text-danger">
                                     {formatCurrency(summary.totalExpenses, settings.currency)}
                                 </span>
                             </div>
-                        </Card>
+                        </div>
 
-                        <Card className="p-2 lg:p-3">
+                        <div className="p-2 lg:p-3 bg-background/80 rounded-lg">
                             <div className="flex items-center justify-between">
-                                <span className="text-xs lg:text-sm font-medium">Available Pool</span>
-                                <span className={`font-semibold text-xs lg:text-sm ${summary.netIncome >= 0 ? 'text-success' : 'text-danger'}`}>
+                                <div className="flex items-center gap-2">
+                                    <PiggyBank className="w-4 h-4 text-primary" />
+                                    <span className="text-sm font-medium">Available Pool</span>
+                                </div>
+                                <span className="text-sm font-semibold text-primary">
                                     {formatCurrency(summary.netIncome, settings.currency)}
                                 </span>
                             </div>
-                        </Card>
+                        </div>
 
-                        <Card className="p-2 lg:p-3">
+                        <div className="p-2 lg:p-3 bg-background/80 rounded-lg">
                             <div className="flex items-center justify-between">
-                                <div className="flex items-center text-primary text-xs lg:text-sm">
-                                    <PiggyBank className="w-3 h-3 lg:w-4 lg:h-4 mr-1" />
-                                    <span>Savings</span>
+                                <div className="flex items-center gap-2">
+                                    <Calendar className="w-4 h-4 text-warning" />
+                                    <span className="text-sm font-medium">Daily Budget</span>
                                 </div>
-                                <span className="font-semibold text-primary text-xs lg:text-sm">
-                                    {formatCurrency(summary.projectedSavings, settings.currency)}
+                                <span className="text-sm font-semibold text-warning">
+                                    {formatCurrency(summary.maxDailyBudget, settings.currency)}
                                 </span>
                             </div>
                             <p className="text-xs text-muted-foreground mt-1">
                                 {getSavingsMessage()}
                             </p>
-                        </Card>
-
-                        <Card className="p-2 lg:p-3">
-                            <div className="flex items-center justify-between">
-                                <div className="flex items-center text-warning text-xs lg:text-sm">
-                                    <Calendar className="w-3 h-3 lg:w-4 lg:h-4 mr-1" />
-                                    <span>Daily Budget</span>
-                                </div>
-                                <span className="font-semibold text-warning text-xs lg:text-sm">
-                                    {formatCurrency(summary.maxDailyBudget, settings.currency)}
-                                </span>
-                            </div>
-                        </Card>
+                        </div>
                     </div>
                 )}
             </div>
 
-            {/* Pages */}
-            <div className="flex-1 overflow-y-auto p-3 lg:p-4">
-                <div className="flex items-center justify-between mb-3 lg:mb-4">
-                    <h2 className="text-xs lg:text-sm font-semibold text-muted-foreground uppercase tracking-wide">Pages</h2>
-                    <Button
-                        size="sm"
-                        variant="ghost"
-                        onClick={() => setIsCreating(true)}
-                    >
-                        <Plus className="w-3 h-3 lg:w-4 lg:h-4" />
-                    </Button>
-                </div>
+            {/* Page Navigation */}
+            <div className="flex-1 p-3 lg:p-4 space-y-3 overflow-y-auto">
+                <h2 className="text-sm font-semibold text-muted-foreground">Budget Pages</h2>
 
-                {isCreating && (
-                    <div className="mb-3 lg:mb-4 p-2 lg:p-3 bg-muted rounded-lg">
-                        <input
-                            type="text"
-                            value={newPageName}
-                            onChange={(e) => setNewPageName(e.target.value)}
-                            placeholder="Page name..."
-                            className="input-default w-full mb-2 text-xs lg:text-sm"
-                            onKeyPress={(e) => e.key === 'Enter' && handleCreatePage()}
-                        />
-                        <div className="flex gap-1">
-                            <Button
-                                size="sm"
-                                onClick={handleCreatePage}
-                                disabled={!newPageName.trim() || isCreating}
-                                className="flex-1"
-                            >
-                                {isCreating ? 'Creating...' : 'Create'}
-                            </Button>
-                            <Button
-                                size="sm"
-                                variant="ghost"
-                                onClick={() => {
-                                    setIsCreating(false);
-                                    setNewPageName('');
-                                }}
-                            >
-                                Cancel
-                            </Button>
-                        </div>
-                    </div>
-                )}
-
-                <div className="space-y-1">
+                <div className="space-y-2">
                     {budgetPages.map((page) => (
-                        <div key={page.id} className="flex items-center gap-1">
+                        <div
+                            key={page.id}
+                            className={`p-2 rounded-lg transition-colors cursor-pointer ${page.id === currentPageId
+                                ? 'bg-primary/10 text-primary'
+                                : 'bg-background/80 hover:bg-background'
+                                }`}
+                            onClick={() => onPageChange(page.id)}
+                        >
                             {editingPageId === page.id ? (
-                                <div className="flex-1 flex items-center gap-1">
+                                <div className="flex items-center gap-2">
                                     <input
                                         type="text"
                                         value={editingPageName}
                                         onChange={(e) => setEditingPageName(e.target.value)}
-                                        className="input-default flex-1 text-xs lg:text-sm"
+                                        className="flex-1 text-sm bg-transparent border-none outline-none"
                                         onKeyPress={(e) => e.key === 'Enter' && handleSaveEdit()}
                                         autoFocus
                                     />
@@ -234,26 +190,66 @@ export function BudgetSidebar({
                                     </Button>
                                 </div>
                             ) : (
-                                <>
-                                    <Button
-                                        variant={page.id === currentPageId ? 'primary' : 'ghost'}
-                                        onClick={() => onPageChange(page.id)}
-                                        className="flex-1 justify-start text-xs lg:text-sm"
-                                        size="sm"
-                                    >
-                                        {page.name}
-                                    </Button>
+                                <div className="flex items-center justify-between">
+                                    <span className="text-sm font-medium truncate">{page.name}</span>
                                     <Button
                                         size="sm"
                                         variant="ghost"
-                                        onClick={() => handleStartEdit(page)}
+                                        onClick={(e) => {
+                                            e.stopPropagation();
+                                            handleStartEdit(page);
+                                        }}
                                     >
                                         <Edit className="w-3 h-3" />
                                     </Button>
-                                </>
+                                </div>
                             )}
                         </div>
                     ))}
+                </div>
+
+                {/* Create New Page */}
+                <div className="pt-2">
+                    {isCreating ? (
+                        <div className="flex items-center gap-2">
+                            <input
+                                type="text"
+                                value={newPageName}
+                                onChange={(e) => setNewPageName(e.target.value)}
+                                placeholder="Page name"
+                                className="flex-1 text-sm bg-background/80 px-2 py-1 rounded"
+                                onKeyPress={(e) => e.key === 'Enter' && handleCreatePage()}
+                                autoFocus
+                            />
+                            <Button
+                                size="sm"
+                                variant="ghost"
+                                onClick={handleCreatePage}
+                            >
+                                <Check className="w-3 h-3" />
+                            </Button>
+                            <Button
+                                size="sm"
+                                variant="ghost"
+                                onClick={() => {
+                                    setIsCreating(false);
+                                    setNewPageName('');
+                                }}
+                            >
+                                <X className="w-3 h-3" />
+                            </Button>
+                        </div>
+                    ) : (
+                        <Button
+                            variant="ghost"
+                            size="sm"
+                            onClick={() => setIsCreating(true)}
+                            className="w-full justify-start text-muted-foreground hover:text-foreground"
+                        >
+                            <Plus className="w-3 h-3 mr-2" />
+                            Add New Page
+                        </Button>
+                    )}
                 </div>
             </div>
         </div>

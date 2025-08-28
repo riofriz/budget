@@ -19,9 +19,53 @@
       "createdAt": "2025-08-28T06:59:04.367Z"
     }
   ],
+  "categories": [
+    {
+      "name": "Salary",
+      "color": "#98D8C8",
+      "type": "earning",
+      "id": "528fa687-140e-410f-9c72-53a91d94d386",
+      "createdAt": "2025-08-28T19:56:54.754Z"
+    },
+    {
+      "name": "House Stuff",
+      "color": "#BB8FCE",
+      "type": "expense",
+      "id": "f2bf9ae0-ae5f-4b94-8f35-b888a2f939f4",
+      "createdAt": "2025-08-28T19:57:24.744Z"
+    },
+    {
+      "name": "Entertainment",
+      "color": "#FF6B6B",
+      "type": "expense",
+      "id": "f32f1153-f2a5-4ed9-85c0-bdd91cfa60bd",
+      "createdAt": "2025-08-28T20:01:02.271Z"
+    },
+    {
+      "name": "Life Stuff",
+      "color": "#FFEAA7",
+      "type": "expense",
+      "id": "19a1aaa5-c5dd-4011-8534-19258175b0df",
+      "createdAt": "2025-08-28T20:02:09.100Z"
+    },
+    {
+      "name": "Kids",
+      "color": "#DDA0DD",
+      "type": "expense",
+      "id": "0ced3ce7-5edd-4589-a74b-23fa168d3ba7",
+      "createdAt": "2025-08-28T20:03:53.509Z"
+    },
+    {
+      "name": "Benefits",
+      "color": "#85C1E9",
+      "type": "earning",
+      "id": "e1fdce9c-fccc-4704-9a5a-c59543bfe683",
+      "createdAt": "2025-08-28T20:15:37.246Z"
+    }
+  ],
   "budgetPages": [
     {
-      "name": "My First Budget",
+      "name": "Family Monthly Budget",
       "id": "d005a0ee-e951-44ed-9cec-500f82de259e",
       "earnings": [
         {
@@ -37,7 +81,36 @@
           "isRecurring": true,
           "id": "48137f54-873b-4444-babb-e4e509ee82b0",
           "createdAt": "2025-08-28T07:25:14.171Z",
-          "updatedAt": "2025-08-28T07:25:14.171Z"
+          "updatedAt": "2025-08-28T19:57:09.609Z",
+          "categoryId": "528fa687-140e-410f-9c72-53a91d94d386"
+        },
+        {
+          "amount": 434.2,
+          "description": "DLA",
+          "people": [
+            {
+              "personId": "78287659-a506-463b-b631-f8d79f8b0834",
+              "amount": 0
+            }
+          ],
+          "categoryId": "e1fdce9c-fccc-4704-9a5a-c59543bfe683",
+          "id": "8747f2b6-9950-4d6e-b9dc-34cd575ce61e",
+          "createdAt": "2025-08-28T20:15:51.960Z",
+          "updatedAt": "2025-08-28T20:31:42.481Z"
+        },
+        {
+          "amount": 327.6,
+          "description": "Carer Allowance",
+          "people": [
+            {
+              "personId": "4e43ccfa-726b-4f9d-a693-e4cfb8c2edf6",
+              "amount": 0
+            }
+          ],
+          "categoryId": "e1fdce9c-fccc-4704-9a5a-c59543bfe683",
+          "id": "62afaa80-ed74-48fe-84f4-e385a376f687",
+          "createdAt": "2025-08-28T20:16:17.312Z",
+          "updatedAt": "2025-08-28T20:16:17.312Z"
         }
       ],
       "expenses": [
@@ -58,7 +131,275 @@
           "isRecurring": true,
           "id": "d98b04b8-80c1-4222-8710-193c4086cf76",
           "createdAt": "2025-08-28T07:18:44.068Z",
-          "updatedAt": "2025-08-28T07:18:44.068Z"
+          "updatedAt": "2025-08-28T19:57:31.713Z",
+          "categoryId": "f2bf9ae0-ae5f-4b94-8f35-b888a2f939f4"
+        },
+        {
+          "amount": 242,
+          "description": "Council Tax",
+          "people": [
+            {
+              "personId": "2959cba1-a868-4089-accb-2c384832ac32",
+              "amount": 0
+            },
+            {
+              "personId": "4e43ccfa-726b-4f9d-a693-e4cfb8c2edf6",
+              "amount": 0
+            }
+          ],
+          "dueDate": 30,
+          "categoryId": "f2bf9ae0-ae5f-4b94-8f35-b888a2f939f4",
+          "id": "e0c501ff-7bf6-4bfa-95c1-f0d35043c122",
+          "createdAt": "2025-08-28T19:59:41.614Z",
+          "updatedAt": "2025-08-28T20:16:55.414Z"
+        },
+        {
+          "amount": 12.99,
+          "description": "Netflix",
+          "people": [
+            {
+              "personId": "2959cba1-a868-4089-accb-2c384832ac32",
+              "amount": 0
+            }
+          ],
+          "dueDate": 28,
+          "id": "d657cebd-8889-4cee-958c-f0307b9d1e6d",
+          "createdAt": "2025-08-28T20:01:21.372Z",
+          "updatedAt": "2025-08-28T20:03:11.729Z",
+          "categoryId": "f32f1153-f2a5-4ed9-85c0-bdd91cfa60bd"
+        },
+        {
+          "amount": 33.51,
+          "description": "Life Insurance",
+          "people": [
+            {
+              "personId": "2959cba1-a868-4089-accb-2c384832ac32",
+              "amount": 0
+            }
+          ],
+          "dueDate": 1,
+          "categoryId": "19a1aaa5-c5dd-4011-8534-19258175b0df",
+          "id": "d488f155-1aa4-4ac6-8500-c0808dab598a",
+          "createdAt": "2025-08-28T20:02:35.083Z",
+          "updatedAt": "2025-08-28T20:02:35.083Z"
+        },
+        {
+          "amount": 16.62,
+          "description": "Car Tax",
+          "people": [
+            {
+              "personId": "2959cba1-a868-4089-accb-2c384832ac32",
+              "amount": 0
+            }
+          ],
+          "dueDate": 1,
+          "categoryId": "19a1aaa5-c5dd-4011-8534-19258175b0df",
+          "id": "62e23343-82e9-4f93-b3bd-3131f138ec3d",
+          "createdAt": "2025-08-28T20:03:02.445Z",
+          "updatedAt": "2025-08-28T20:05:56.701Z"
+        },
+        {
+          "amount": 10,
+          "description": "Sebbie Savings",
+          "people": [
+            {
+              "personId": "78287659-a506-463b-b631-f8d79f8b0834",
+              "amount": 0
+            }
+          ],
+          "categoryId": "0ced3ce7-5edd-4589-a74b-23fa168d3ba7",
+          "id": "8970b4bb-3964-42cb-9a64-e0bfcbb4be33",
+          "createdAt": "2025-08-28T20:03:58.391Z",
+          "updatedAt": "2025-08-28T20:04:18.176Z",
+          "dueDate": 11
+        },
+        {
+          "amount": 28,
+          "description": "Pixel 10 ",
+          "people": [
+            {
+              "personId": "2959cba1-a868-4089-accb-2c384832ac32",
+              "amount": 0
+            }
+          ],
+          "dueDate": 12,
+          "categoryId": "19a1aaa5-c5dd-4011-8534-19258175b0df",
+          "id": "de8fd720-b04d-4f38-bbfa-fc2a7e56acf1",
+          "createdAt": "2025-08-28T20:04:49.541Z",
+          "updatedAt": "2025-08-28T20:04:49.541Z"
+        },
+        {
+          "amount": 27.69,
+          "description": "Vodafone",
+          "people": [
+            {
+              "personId": "2959cba1-a868-4089-accb-2c384832ac32",
+              "amount": 0
+            }
+          ],
+          "dueDate": 15,
+          "categoryId": "19a1aaa5-c5dd-4011-8534-19258175b0df",
+          "id": "b466d2a7-ea8c-4c3e-841f-64072b78aea6",
+          "createdAt": "2025-08-28T20:05:25.003Z",
+          "updatedAt": "2025-08-28T20:05:25.003Z"
+        },
+        {
+          "amount": 52.02,
+          "description": "BT Internet",
+          "people": [
+            {
+              "personId": "2959cba1-a868-4089-accb-2c384832ac32",
+              "amount": 0
+            },
+            {
+              "personId": "4e43ccfa-726b-4f9d-a693-e4cfb8c2edf6",
+              "amount": 0
+            }
+          ],
+          "dueDate": 18,
+          "categoryId": "f2bf9ae0-ae5f-4b94-8f35-b888a2f939f4",
+          "id": "1c7bdda6-0f66-4b9f-b1d8-ff23b5c137f0",
+          "createdAt": "2025-08-28T20:05:45.335Z",
+          "updatedAt": "2025-08-28T20:05:45.335Z"
+        },
+        {
+          "amount": 52.23,
+          "description": "Car Insurance",
+          "people": [
+            {
+              "personId": "2959cba1-a868-4089-accb-2c384832ac32",
+              "amount": 0
+            }
+          ],
+          "dueDate": 19,
+          "categoryId": "19a1aaa5-c5dd-4011-8534-19258175b0df",
+          "id": "67e5a00f-b586-4eb3-b1a6-bf5e043e4d54",
+          "createdAt": "2025-08-28T20:06:19.972Z",
+          "updatedAt": "2025-08-28T20:06:19.972Z"
+        },
+        {
+          "amount": 200,
+          "description": "Electricity",
+          "people": [
+            {
+              "personId": "2959cba1-a868-4089-accb-2c384832ac32",
+              "amount": 0
+            },
+            {
+              "personId": "4e43ccfa-726b-4f9d-a693-e4cfb8c2edf6",
+              "amount": 0
+            }
+          ],
+          "dueDate": 26,
+          "categoryId": "f2bf9ae0-ae5f-4b94-8f35-b888a2f939f4",
+          "id": "dea23658-cc1b-4a50-a920-5039b25bc298",
+          "createdAt": "2025-08-28T20:06:38.752Z",
+          "updatedAt": "2025-08-28T20:06:38.752Z"
+        },
+        {
+          "amount": 2.99,
+          "description": "Yoututbe",
+          "people": [
+            {
+              "personId": "2959cba1-a868-4089-accb-2c384832ac32",
+              "amount": 0
+            }
+          ],
+          "dueDate": 28,
+          "categoryId": "f32f1153-f2a5-4ed9-85c0-bdd91cfa60bd",
+          "id": "b349e8d5-693a-425b-86cb-3042ec785d1d",
+          "createdAt": "2025-08-28T20:10:55.347Z",
+          "updatedAt": "2025-08-28T20:10:55.347Z"
+        },
+        {
+          "amount": 4.99,
+          "description": "Prime",
+          "people": [
+            {
+              "personId": "2959cba1-a868-4089-accb-2c384832ac32",
+              "amount": 0
+            }
+          ],
+          "dueDate": 4,
+          "categoryId": "f32f1153-f2a5-4ed9-85c0-bdd91cfa60bd",
+          "id": "ef41f3a0-e2df-4ade-b9ed-024b8b0cf57c",
+          "createdAt": "2025-08-28T20:11:20.688Z",
+          "updatedAt": "2025-08-28T20:11:20.688Z"
+        },
+        {
+          "amount": 5.99,
+          "description": "Crunchyroll",
+          "people": [
+            {
+              "personId": "2959cba1-a868-4089-accb-2c384832ac32",
+              "amount": 0
+            }
+          ],
+          "dueDate": 12,
+          "categoryId": "f32f1153-f2a5-4ed9-85c0-bdd91cfa60bd",
+          "id": "a99edbbb-c490-48ca-9c43-d975262ae4a3",
+          "createdAt": "2025-08-28T20:11:54.738Z",
+          "updatedAt": "2025-08-28T20:11:54.738Z"
+        },
+        {
+          "amount": 4.99,
+          "description": "Google Play Pass",
+          "people": [
+            {
+              "personId": "2959cba1-a868-4089-accb-2c384832ac32",
+              "amount": 0
+            }
+          ],
+          "dueDate": 15,
+          "categoryId": "f32f1153-f2a5-4ed9-85c0-bdd91cfa60bd",
+          "id": "52a36557-981e-4b9a-bc9c-5319b7e48176",
+          "createdAt": "2025-08-28T20:12:33.179Z",
+          "updatedAt": "2025-08-28T20:12:33.179Z"
+        },
+        {
+          "amount": 11.99,
+          "description": "Fernando Spotify",
+          "people": [
+            {
+              "personId": "2959cba1-a868-4089-accb-2c384832ac32",
+              "amount": 0
+            }
+          ],
+          "dueDate": 21,
+          "categoryId": "f32f1153-f2a5-4ed9-85c0-bdd91cfa60bd",
+          "id": "896d1217-5a2a-4daa-9f24-0152c8aeb69a",
+          "createdAt": "2025-08-28T20:13:03.179Z",
+          "updatedAt": "2025-08-28T20:13:03.179Z"
+        },
+        {
+          "amount": 14.94,
+          "description": "Cursor",
+          "people": [
+            {
+              "personId": "2959cba1-a868-4089-accb-2c384832ac32",
+              "amount": 0
+            }
+          ],
+          "dueDate": 24,
+          "categoryId": "f32f1153-f2a5-4ed9-85c0-bdd91cfa60bd",
+          "id": "a8daf206-7a68-410c-9c93-fa76e40be265",
+          "createdAt": "2025-08-28T20:13:27.817Z",
+          "updatedAt": "2025-08-28T20:13:27.817Z"
+        },
+        {
+          "amount": 3.02,
+          "description": "Github",
+          "people": [
+            {
+              "personId": "2959cba1-a868-4089-accb-2c384832ac32",
+              "amount": 0
+            }
+          ],
+          "dueDate": 1,
+          "categoryId": "f32f1153-f2a5-4ed9-85c0-bdd91cfa60bd",
+          "id": "659ea636-1514-453d-afe1-851f42501040",
+          "createdAt": "2025-08-28T20:13:39.613Z",
+          "updatedAt": "2025-08-28T20:13:39.613Z"
         }
       ],
       "createdAt": "2025-08-28T06:29:39.657Z"

@@ -1,19 +1,22 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { Person, TransactionPerson, Earning, Expense } from '../../../_types';
+import { Person, TransactionPerson, Earning, Expense, Category } from '../../../_types';
 import { Button } from '../../ui/Button';
 import { Input } from '../../ui/Input';
 import { Card } from '../../ui/Card';
-import { getCurrencySymbol, formatCurrency } from '../../../_utils/calculations';
-import { Plus, X } from 'lucide-react';
+import { getCurrencySymbol } from '../../../_utils/calculations';
+import { Plus, X, Settings } from 'lucide-react';
 import { getRandomColor } from '../../../_utils/calculations';
+import { CategoryModal } from './CategoryModal';
 
 interface TransactionModalProps {
     type: 'earning' | 'expense';
     people: Person[];
+    categories: Category[];
     onSubmit: (formData: FormData) => Promise<void>;
     onPersonCreate: (formData: FormData) => Promise<void>;
+    onCategoryCreate: (formData: FormData) => Promise<void>;
     onClose: () => void;
     currency?: string;
     editingTransaction?: Earning | Expense;
@@ -22,8 +25,10 @@ interface TransactionModalProps {
 export function TransactionModal({
     type,
     people,
+    categories,
     onSubmit,
     onPersonCreate,
+    onCategoryCreate,
     onClose,
     currency = 'USD',
     editingTransaction
@@ -34,15 +39,19 @@ export function TransactionModal({
     const [selectedPeople, setSelectedPeople] = useState<TransactionPerson[]>([]);
     const [isSubmitting, setIsSubmitting] = useState(false);
     const [showPersonSelector, setShowPersonSelector] = useState(false);
+    const [showCategoryModal, setShowCategoryModal] = useState(false);
     const [newPersonName, setNewPersonName] = useState('');
+    const [categoryId, setCategoryId] = useState('');
 
     const currencySymbol = getCurrencySymbol(currency);
+    const relevantCategories = categories.filter(cat => cat.type === type);
 
     useEffect(() => {
         if (editingTransaction) {
             setAmount(editingTransaction.amount.toString());
             setDescription(editingTransaction.description);
             setSelectedPeople(editingTransaction.people);
+            setCategoryId(editingTransaction.categoryId || '');
 
             if ('dueDate' in editingTransaction) {
                 setDueDate(editingTransaction.dueDate?.toString() || '');
@@ -84,6 +93,11 @@ export function TransactionModal({
             formData.append('amount', amount);
             formData.append('description', description);
             formData.append('people', JSON.stringify(selectedPeople));
+
+            // Add category if selected
+            if (categoryId) {
+                formData.append('categoryId', categoryId);
+            }
 
             // Add due date if provided (indicates recurring transaction)
             if (dueDate) {
@@ -161,6 +175,36 @@ export function TransactionModal({
                             placeholder={`${type === 'earning' ? 'Salary, bonus, etc.' : 'Rent, food, etc.'}`}
                             required
                         />
+                    </div>
+
+                    <div>
+                        <div className="flex items-center justify-between mb-2">
+                            <label className="block text-sm font-medium text-muted-foreground">
+                                Category
+                            </label>
+                            <Button
+                                type="button"
+                                variant="outline"
+                                size="sm"
+                                onClick={() => setShowCategoryModal(true)}
+                                className="flex items-center gap-1"
+                            >
+                                <Settings className="w-3 h-3" />
+                                Manage
+                            </Button>
+                        </div>
+                        <select
+                            value={categoryId}
+                            onChange={(e) => setCategoryId(e.target.value)}
+                            className="w-full px-3 py-2 border border-border rounded-md bg-background text-foreground"
+                        >
+                            <option value="">Select a category</option>
+                            {relevantCategories.map((category) => (
+                                <option key={category.id} value={category.id}>
+                                    {category.name}
+                                </option>
+                            ))}
+                        </select>
                     </div>
 
                     <div>
@@ -295,6 +339,14 @@ export function TransactionModal({
                     </div>
                 )}
             </Card>
+
+            {showCategoryModal && (
+                <CategoryModal
+                    categories={categories}
+                    onSubmit={onCategoryCreate}
+                    onClose={() => setShowCategoryModal(false)}
+                />
+            )}
         </div>
     );
 }

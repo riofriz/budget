@@ -15,9 +15,12 @@ import {
     deleteEarning,
     deleteExpense,
     updateSettings,
+    addCategory,
+    updateCategory,
+    deleteCategory,
     loadData
 } from './dataStorage';
-import { Person, BudgetPage, Earning, Expense, AppSettings, TransactionPerson } from '../_types';
+import { Person, BudgetPage, Earning, Expense, AppSettings, TransactionPerson, Category } from '../_types';
 
 export async function createPersonAction(formData: FormData): Promise<Person> {
     const name = formData.get('name') as string;
@@ -73,6 +76,7 @@ export async function createEarningAction(pageId: string, formData: FormData): P
     const description = formData.get('description') as string;
     const peopleData = formData.get('people') as string;
     const dueDateStr = formData.get('dueDate') as string;
+    const categoryId = formData.get('categoryId') as string;
 
     if (!amount || !description) {
         throw new Error('Amount and description are required');
@@ -93,7 +97,8 @@ export async function createEarningAction(pageId: string, formData: FormData): P
         amount,
         description,
         people,
-        dueDate
+        dueDate,
+        categoryId: categoryId || undefined
     });
     revalidatePath('/');
     return earning;
@@ -104,6 +109,7 @@ export async function createExpenseAction(pageId: string, formData: FormData): P
     const description = formData.get('description') as string;
     const peopleData = formData.get('people') as string;
     const dueDateStr = formData.get('dueDate') as string;
+    const categoryId = formData.get('categoryId') as string;
 
     if (!amount || !description) {
         throw new Error('Amount and description are required');
@@ -124,7 +130,8 @@ export async function createExpenseAction(pageId: string, formData: FormData): P
         amount,
         description,
         people,
-        dueDate
+        dueDate,
+        categoryId: categoryId || undefined
     });
     revalidatePath('/');
     return expense;
@@ -135,6 +142,7 @@ export async function updateEarningAction(pageId: string, earningId: string, for
     const description = formData.get('description') as string;
     const peopleData = formData.get('people') as string;
     const dueDateStr = formData.get('dueDate') as string;
+    const categoryId = formData.get('categoryId') as string;
 
     if (!amount || !description) {
         throw new Error('Amount and description are required');
@@ -155,7 +163,8 @@ export async function updateEarningAction(pageId: string, earningId: string, for
         amount,
         description,
         people,
-        dueDate
+        dueDate,
+        categoryId: categoryId || undefined
     });
     revalidatePath('/');
     return earning;
@@ -166,6 +175,7 @@ export async function updateExpenseAction(pageId: string, expenseId: string, for
     const description = formData.get('description') as string;
     const peopleData = formData.get('people') as string;
     const dueDateStr = formData.get('dueDate') as string;
+    const categoryId = formData.get('categoryId') as string;
 
     if (!amount || !description) {
         throw new Error('Amount and description are required');
@@ -186,7 +196,8 @@ export async function updateExpenseAction(pageId: string, expenseId: string, for
         amount,
         description,
         people,
-        dueDate
+        dueDate,
+        categoryId: categoryId || undefined
     });
     revalidatePath('/');
     return expense;
@@ -208,6 +219,40 @@ export async function updateSettingsAction(settings: Partial<AppSettings>): Prom
     const updatedSettings = updateSettings(settings);
     revalidatePath('/');
     return updatedSettings;
+}
+
+export async function createCategoryAction(formData: FormData): Promise<Category | null> {
+    const name = formData.get('name') as string;
+    const color = formData.get('color') as string;
+    const type = formData.get('type') as 'earning' | 'expense';
+
+    if (!name || !color || !type) {
+        throw new Error('Name, color, and type are required');
+    }
+
+    const category = addCategory({ name, color, type });
+    revalidatePath('/');
+    return category;
+}
+
+export async function updateCategoryAction(categoryId: string, formData: FormData): Promise<Category | null> {
+    const name = formData.get('name') as string;
+    const color = formData.get('color') as string;
+    const type = formData.get('type') as 'earning' | 'expense';
+
+    if (!name || !color || !type) {
+        throw new Error('Name, color, and type are required');
+    }
+
+    const category = updateCategory(categoryId, { name, color, type });
+    revalidatePath('/');
+    return category;
+}
+
+export async function deleteCategoryAction(categoryId: string): Promise<Category | null> {
+    const category = deleteCategory(categoryId);
+    revalidatePath('/');
+    return category;
 }
 
 export async function getDataAction() {

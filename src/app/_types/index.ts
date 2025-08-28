@@ -10,11 +10,20 @@ export interface TransactionPerson {
     amount: number;
 }
 
+export interface Category {
+    id: string;
+    name: string;
+    color: string;
+    type: 'earning' | 'expense';
+    createdAt: Date;
+}
+
 export interface Earning {
     id: string;
     amount: number;
     description: string;
     people: TransactionPerson[];
+    categoryId?: string;
     dueDate?: number;
     isRecurring?: boolean;
     createdAt: Date;
@@ -27,6 +36,7 @@ export interface Expense {
     amount: number;
     description: string;
     people: TransactionPerson[];
+    categoryId?: string;
     dueDate?: number;
     isRecurring?: boolean;
     createdAt: Date;
@@ -49,6 +59,7 @@ export interface AppSettings {
 
 export interface AppData {
     people: Person[];
+    categories: Category[];
     budgetPages: BudgetPage[];
     settings: AppSettings;
 }

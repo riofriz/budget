@@ -1,7 +1,7 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { BudgetPage as BudgetPageType, Person, Earning, Expense, AppSettings } from '../../../_types';
+import { BudgetPage as BudgetPageType, Person, Earning, Expense, AppSettings, Category } from '../../../_types';
 import { BudgetSidebar } from './BudgetSidebar';
 import { TransactionList } from './TransactionList';
 import { TransactionModal } from './TransactionModal';
@@ -13,6 +13,7 @@ import {
     createEarningAction,
     createExpenseAction,
     createPersonAction,
+    createCategoryAction,
     createBudgetPageAction,
     updateEarningAction,
     updateExpenseAction,
@@ -25,6 +26,7 @@ import {
 interface BudgetPageProps {
     initialData: {
         people: Person[];
+        categories: Category[];
         budgetPages: BudgetPageType[];
         settings: AppSettings;
     };
@@ -32,6 +34,7 @@ interface BudgetPageProps {
 
 export function BudgetPage({ initialData }: BudgetPageProps) {
     const [currentPeople, setCurrentPeople] = useState<Person[]>(initialData.people);
+    const [currentCategories, setCurrentCategories] = useState<Category[]>(initialData.categories);
     const [currentBudgetPages, setCurrentBudgetPages] = useState<BudgetPageType[]>(initialData.budgetPages);
     const [currentSettings, setCurrentSettings] = useState<AppSettings>(initialData.settings);
     const [currentPageId, setCurrentPageId] = useState<string>('');
@@ -56,6 +59,7 @@ export function BudgetPage({ initialData }: BudgetPageProps) {
         try {
             const data = await getDataAction();
             setCurrentPeople(data.people);
+            setCurrentCategories(data.categories);
             setCurrentBudgetPages(data.budgetPages);
             setCurrentSettings(data.settings);
         } catch (error) {
@@ -103,6 +107,11 @@ export function BudgetPage({ initialData }: BudgetPageProps) {
 
     const handleCreatePerson = async (formData: FormData) => {
         await createPersonAction(formData);
+        await refreshData();
+    };
+
+    const handleCreateCategory = async (formData: FormData) => {
+        await createCategoryAction(formData);
         await refreshData();
     };
 
@@ -255,21 +264,18 @@ export function BudgetPage({ initialData }: BudgetPageProps) {
 
                 {/* Content */}
                 <div className="p-4 space-y-6">
-                    <BudgetChart
-                        earnings={currentEarnings}
-                        expenses={currentExpenses}
-                        currency={currentSettings.currency}
-                    />
-
                     <TransactionList
                         earnings={currentEarnings}
                         expenses={currentExpenses}
                         people={currentPeople}
+                        categories={currentCategories}
                         currency={currentSettings.currency}
                         onEditEarning={handleEditEarningClick}
                         onEditExpense={handleEditExpenseClick}
                         onDeleteEarning={handleDeleteEarning}
                         onDeleteExpense={handleDeleteExpense}
+                        onAddEarning={() => setShowEarningModal(true)}
+                        onAddExpense={() => setShowExpenseModal(true)}
                     />
                 </div>
             </div>
@@ -279,8 +285,10 @@ export function BudgetPage({ initialData }: BudgetPageProps) {
                 <TransactionModal
                     type="earning"
                     people={currentPeople}
+                    categories={currentCategories}
                     onSubmit={editingEarning ? handleEditEarning : handleCreateEarning}
                     onPersonCreate={handleCreatePerson}
+                    onCategoryCreate={handleCreateCategory}
                     onClose={handleCloseEarningModal}
                     currency={currentSettings.currency}
                     editingTransaction={editingEarning}
@@ -291,8 +299,10 @@ export function BudgetPage({ initialData }: BudgetPageProps) {
                 <TransactionModal
                     type="expense"
                     people={currentPeople}
+                    categories={currentCategories}
                     onSubmit={editingExpense ? handleEditExpense : handleCreateExpense}
                     onPersonCreate={handleCreatePerson}
+                    onCategoryCreate={handleCreateCategory}
                     onClose={handleCloseExpenseModal}
                     currency={currentSettings.currency}
                     editingTransaction={editingExpense}

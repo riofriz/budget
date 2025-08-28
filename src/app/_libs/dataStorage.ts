@@ -1,6 +1,6 @@
 import fs from 'fs';
 import path from 'path';
-import { AppData, Person, BudgetPage, Earning, Expense, AppSettings } from '../_types';
+import { AppData, Person, BudgetPage, Earning, Expense, AppSettings, Category } from '../_types';
 
 const CONFIG_DIR = path.join(process.cwd(), 'config');
 const DATA_FILE = path.join(CONFIG_DIR, 'app-data.json');
@@ -10,8 +10,11 @@ const defaultSettings: AppSettings = {
     theme: 'light'
 };
 
+const defaultCategories: Category[] = [];
+
 const defaultData: AppData = {
     people: [],
+    categories: defaultCategories,
     budgetPages: [],
     settings: defaultSettings
 };
@@ -216,4 +219,37 @@ export function updateSettings(settings: Partial<AppSettings>): AppSettings {
     data.settings = { ...data.settings, ...settings };
     saveData(data);
     return data.settings;
+}
+
+export function addCategory(category: Omit<Category, 'id' | 'createdAt'>): Category {
+    const data = loadData();
+    const newCategory: Category = {
+        ...category,
+        id: crypto.randomUUID(),
+        createdAt: new Date()
+    };
+    data.categories.push(newCategory);
+    saveData(data);
+    return newCategory;
+}
+
+export function updateCategory(categoryId: string, updates: Partial<Omit<Category, 'id' | 'createdAt'>>): Category | null {
+    const data = loadData();
+    const category = data.categories.find(c => c.id === categoryId);
+    if (!category) return null;
+
+    Object.assign(category, updates);
+    saveData(data);
+    return category;
+}
+
+export function deleteCategory(categoryId: string): Category | null {
+    const data = loadData();
+    const categoryIndex = data.categories.findIndex(c => c.id === categoryId);
+    if (categoryIndex === -1) return null;
+
+    const deletedCategory = data.categories[categoryIndex];
+    data.categories.splice(categoryIndex, 1);
+    saveData(data);
+    return deletedCategory;
 }

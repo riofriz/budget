@@ -1,208 +1,112 @@
 'use client';
 
-import { useState } from 'react';
-import { Earning, Expense } from '../../../_types';
+import { Earning, Expense, Category } from '../../../_types';
 import { formatCurrency } from '../../../_utils/calculations';
 import { Card } from '../../ui/Card';
-import { Button } from '../../ui/Button';
-import { ChevronLeft, ChevronRight, TrendingUp, TrendingDown } from 'lucide-react';
+import { TrendingUp, TrendingDown, PieChart } from 'lucide-react';
 
 interface BudgetChartProps {
     earnings: Earning[];
     expenses: Expense[];
+    categories: Category[];
     currency: string;
 }
 
-interface ChartData {
-    date: string;
-    earnings: number;
-    expenses: number;
-    net: number;
-    dayName: string;
-    dayNumber: number;
+interface CategoryData {
+    category: Category;
+    total: number;
+    count: number;
 }
 
-export function BudgetChart({ earnings, expenses, currency }: BudgetChartProps) {
-    const [weekOffset, setWeekOffset] = useState(0);
+export function BudgetChart({ earnings, expenses, categories, currency }: BudgetChartProps) {
+    const getCategoryData = (): CategoryData[] => {
+        const categoryMap = new Map<string, CategoryData>();
 
-    const getChartData = (): ChartData[] => {
-        const dataMap = new Map<string, ChartData>();
-        const today = new Date();
-
-        // Calculate the start of the current week (Sunday)
-        const startOfWeek = new Date(today);
-        startOfWeek.setDate(today.getDate() - today.getDay() + (weekOffset * 7));
-
-        // Generate 7 days starting from the week start
-        for (let i = 0; i < 7; i++) {
-            const date = new Date(startOfWeek);
-            date.setDate(startOfWeek.getDate() + i);
-            const dateStr = date.toISOString().split('T')[0];
-
-            dataMap.set(dateStr, {
-                date: dateStr,
-                earnings: 0,
-                expenses: 0,
-                net: 0,
-                dayName: date.toLocaleDateString('en-US', { weekday: 'short' }),
-                dayNumber: date.getDate()
+        // Initialize with all expense categories
+        categories
+            .filter(cat => cat.type === 'expense')
+            .forEach(category => {
+                categoryMap.set(category.id, {
+                    category,
+                    total: 0,
+                    count: 0
+                });
             });
-        }
 
-        // Add earnings based on due date or creation date
-        earnings.forEach(earning => {
-            let dateStr: string;
-
-            if (earning.dueDate) {
-                // If due date exists, it's recurring - find the matching day in the week
-                const matchingDay = Array.from(dataMap.values()).find(day => day.dayNumber === earning.dueDate);
-                if (matchingDay) {
-                    dateStr = matchingDay.date;
-                } else {
-                    return; // Skip if day not in current week
-                }
-            } else {
-                dateStr = new Date(earning.createdAt).toISOString().split('T')[0];
-            }
-
-            if (dataMap.has(dateStr)) {
-                const data = dataMap.get(dateStr)!;
-                data.earnings += earning.amount;
-                data.net = data.earnings - data.expenses;
-            }
-        });
-
+        // Sum up expenses by category
         expenses.forEach(expense => {
-            let dateStr: string;
-
-            if (expense.dueDate) {
-                // If due date exists, it's recurring - find the matching day in the week
-                const matchingDay = Array.from(dataMap.values()).find(day => day.dayNumber === expense.dueDate);
-                if (matchingDay) {
-                    dateStr = matchingDay.date;
-                } else {
-                    return; // Skip if day not in current week
-                }
-            } else {
-                dateStr = new Date(expense.createdAt).toISOString().split('T')[0];
-            }
-
-            if (dataMap.has(dateStr)) {
-                const data = dataMap.get(dateStr)!;
-                data.expenses += expense.amount;
-                data.net = data.earnings - data.expenses;
+            const categoryId = expense.categoryId || 'other';
+            const existing = categoryMap.get(categoryId);
+            if (existing) {
+                existing.total += expense.amount;
+                existing.count += 1;
             }
         });
 
-        return Array.from(dataMap.values());
+        // Convert to array and sort by total amount (highest first)
+        return Array.from(categoryMap.values())
+            .filter(data => data.total > 0) // Only show categories with expenses
+            .sort((a, b) => b.total - a.total)
+            .slice(0, 5); // Only show top 5 categories
     };
 
-    const chartData = getChartData();
-    const maxValue = Math.max(
-        ...chartData.map(d => Math.max(d.earnings, d.expenses))
-    );
+    const categoryData = getCategoryData();
+    const totalExpenses = expenses.reduce((sum, expense) => sum + expense.amount, 0);
+    const totalEarnings = earnings.reduce((sum, earning) => sum + earning.amount, 0);
 
-    const getBarHeight = (value: number) => {
-        if (maxValue === 0) return 0;
-        const height = (value / maxValue) * 100;
-        return Math.max(height, 4);
-    };
-
-    const totalEarnings = chartData.reduce((sum, d) => sum + d.earnings, 0);
-    const totalExpenses = chartData.reduce((sum, d) => sum + d.expenses, 0);
-    const netIncome = totalEarnings - totalExpenses;
-
-    const getWeekLabel = () => {
-        const firstDay = new Date(chartData[0]?.date || new Date());
-        const lastDay = new Date(chartData[6]?.date || new Date());
-
-        if (weekOffset === 0) {
-            return 'This Week';
-        } else if (weekOffset === -1) {
-            return 'Last Week';
-        } else if (weekOffset === 1) {
-            return 'Next Week';
-        } else {
-            return `${firstDay.toLocaleDateString()} - ${lastDay.toLocaleDateString()}`;
-        }
-    };
+    if (categoryData.length === 0) {
+        return null; // Don't render anything if no expenses
+    }
 
     return (
-        <Card className="p-6">
-            <div className="flex items-center justify-between mb-6">
-                <div className="flex items-center gap-4">
-                    <h3 className="text-lg font-semibold">{getWeekLabel()}</h3>
-                    <div className="flex items-center gap-4 text-sm">
-                        <div className="flex items-center text-success">
-                            <TrendingUp className="w-4 h-4 mr-1" />
-                            <span>Earnings: {formatCurrency(totalEarnings, currency)}</span>
-                        </div>
-                        <div className="flex items-center text-danger">
-                            <TrendingDown className="w-4 h-4 mr-1" />
-                            <span>Expenses: {formatCurrency(totalExpenses, currency)}</span>
-                        </div>
-                    </div>
-                </div>
+        <Card className="p-4">
+            <div className="flex items-center justify-between mb-3">
                 <div className="flex items-center gap-2">
-                    <Button
-                        variant="outline"
-                        size="sm"
-                        onClick={() => setWeekOffset(prev => prev - 1)}
-                    >
-                        <ChevronLeft className="w-4 h-4" />
-                    </Button>
-                    <Button
-                        variant="outline"
-                        size="sm"
-                        onClick={() => setWeekOffset(0)}
-                        disabled={weekOffset === 0}
-                    >
-                        Today
-                    </Button>
-                    <Button
-                        variant="outline"
-                        size="sm"
-                        onClick={() => setWeekOffset(prev => prev + 1)}
-                    >
-                        <ChevronRight className="w-4 h-4" />
-                    </Button>
+                    <PieChart className="w-4 h-4 text-muted-foreground" />
+                    <h3 className="text-sm font-medium">Top Spending Categories</h3>
+                </div>
+                <div className="flex items-center gap-3 text-xs">
+                    <div className="flex items-center text-success">
+                        <TrendingUp className="w-3 h-3 mr-1" />
+                        <span>{formatCurrency(totalEarnings, currency)}</span>
+                    </div>
+                    <div className="flex items-center text-danger">
+                        <TrendingDown className="w-3 h-3 mr-1" />
+                        <span>{formatCurrency(totalExpenses, currency)}</span>
+                    </div>
                 </div>
             </div>
 
-            <div className="h-64 flex items-end justify-between gap-1">
-                {chartData.map((data, index) => (
-                    <div key={data.date} className="flex-1 flex flex-col items-center">
-                        <div className="w-full h-full flex items-end justify-center gap-1 pb-12">
-                            {/* Earnings bar */}
+            <div className="space-y-2">
+                {categoryData.map((data) => (
+                    <div key={data.category.id} className="flex items-center justify-between text-sm">
+                        <div className="flex items-center gap-2">
                             <div
-                                className="w-1/2 bg-success rounded-t-sm transition-all duration-300 hover:opacity-80 cursor-pointer"
-                                style={{ height: `${getBarHeight(data.earnings)}%` }}
-                                title={`Earnings: ${formatCurrency(data.earnings, currency)}`}
+                                className="w-3 h-3 rounded-full"
+                                style={{ backgroundColor: data.category.color }}
                             />
-                            {/* Expenses bar */}
-                            <div
-                                className="w-1/2 bg-danger rounded-t-sm transition-all duration-300 hover:opacity-80 cursor-pointer"
-                                style={{ height: `${getBarHeight(data.expenses)}%` }}
-                                title={`Expenses: ${formatCurrency(data.expenses, currency)}`}
-                            />
+                            <span className="font-medium">{data.category.name}</span>
+                            <span className="text-muted-foreground">
+                                ({data.count})
+                            </span>
                         </div>
-                        <div className="text-center">
-                            <div className="text-xs font-medium text-muted-foreground">
-                                {data.dayName} {data.dayNumber}
-                            </div>
-                            <div className={`text-xs font-semibold mt-1 ${data.net >= 0 ? 'text-success' : 'text-danger'}`}>
-                                {formatCurrency(data.net, currency)}
-                            </div>
+                        <div className="flex items-center gap-2">
+                            <span className="font-semibold text-danger">
+                                {formatCurrency(data.total, currency)}
+                            </span>
+                            <span className="text-muted-foreground text-xs">
+                                {((data.total / totalExpenses) * 100).toFixed(1)}%
+                            </span>
                         </div>
                     </div>
                 ))}
             </div>
 
-            <div className="mt-6 pt-4 border-t border-border">
-                <div className="flex items-center justify-between">
-                    <span className="text-sm font-medium">Net Income ({getWeekLabel()})</span>
-                    <span className={`font-semibold ${netIncome >= 0 ? 'text-success' : 'text-danger'}`}>
-                        {formatCurrency(netIncome, currency)}
+            <div className="mt-3 pt-2 border-t border-border">
+                <div className="flex items-center justify-between text-xs">
+                    <span className="text-muted-foreground">Net Income</span>
+                    <span className={`font-semibold ${totalEarnings - totalExpenses >= 0 ? 'text-success' : 'text-danger'}`}>
+                        {formatCurrency(totalEarnings - totalExpenses, currency)}
                     </span>
                 </div>
             </div>
